@@ -1502,7 +1502,7 @@ mongodb-core@2.1.2:
     bson "~1.0.1"
     require_optional "~1.0.0"
 
-mongodb@2.2.16:
+mongodb@2.2.16, mongodb@^2.2.16:
   version "2.2.16"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.16.tgz#e32ba91cf9e29f371fb38ba0c4a71c3b1f5fae77"
   dependencies:
