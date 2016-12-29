@@ -32,6 +32,7 @@ connectMongoose()
 
 //set up express app
 const app = express();
+const port = process.env.PORT || 8000;
 
 //set up some logging and parsing middleware
 //for the entire app
@@ -67,6 +68,6 @@ app.use((err, req, res, next) => {
 });
 
 //start running app
-app.listen(8000, ()=>{
-  console.log("App is now listening on port 8000");
+app.listen(port, ()=>{
+  console.log(`App is now listening on port ${port}`);
 });
