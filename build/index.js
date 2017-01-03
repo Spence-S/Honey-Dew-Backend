@@ -85,8 +85,10 @@ app.use(function (req, res, next) {
 //set up error handler
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
-  console.log(err.message);
-  res.send(err);
+  res.send({
+    status: err.status,
+    message: err.message
+  });
 });
 
 //start running app
