@@ -103,5 +103,25 @@ router.delete('/:id', (req, res, next) => {
       return next(err);
     });
 });
+/*******************************
+PUT route to update some shit
+******************************/
+router.patch('/:id', (req, res, next) => {
+  if(!ObjectID.isValid(req.params.id)){
+    let err = new Error('ObjectID invalid');
+    err.status = 400;
+    console.log(err);
+    return next(err);
+  }
+  Todo.findByIdAndUpdate(req.params.id, req.body,
+    { new: true, runValidators : true,})
+    .then( doc => {
+      res.send(doc);
+    })
+    .catch( err => {
+      err.status = 400;
+      return next(err);
+    });
+});
 /*Export the router as a module*/
 export default router;

@@ -8,6 +8,7 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import router from './routes/routes';
+import cors from 'cors';
 
 /**************************
 Import Database dependencies
@@ -36,6 +37,7 @@ const port = process.env.PORT || 8000;
 
 //set up some logging and parsing middleware
 //for the entire app
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
