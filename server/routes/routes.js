@@ -106,7 +106,7 @@ router.delete('/:id', (req, res, next) => {
 /*******************************
 PUT route to update some shit
 ******************************/
-router.patch('/:id', (req, res, next) => {
+router.put('/:id', (req, res, next) => {
   if(!ObjectID.isValid(req.params.id)){
     let err = new Error('ObjectID invalid');
     err.status = 400;

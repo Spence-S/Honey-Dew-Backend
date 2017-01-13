@@ -8,6 +8,7 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import router from './routes/routes';
+import userRoute from './routes/users'
 import cors from 'cors';
 
 /**************************
@@ -43,6 +44,7 @@ app.use(bodyParser.json());
 
 //api routes
 app.use('/api', router);
+app.use('/users', userRoute)
 
 /*************************
 GET /
