@@ -43,8 +43,18 @@ router.get('/me', (req, res, next) => {
 //POST /users/login
 router.post('/login', (req, res, next) => {
   let { email, password } = req.body;
-  let body = { email, password };
-  res.send( body );
+  User.findByCredentials(email, password)
+    .then( user => {
+      return user.generateAuthToken()
+        .then( token => {
+          res.header('x-auth', token).send(user);
+        });
+    })
+    .catch( e => {
+      let err = new Error('problem logging in');
+      err.status = 400;
+      return next(err);
+    });
 });
 
 
