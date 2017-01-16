@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { ObjectID } from 'mongodb';
 import User from '../models/user';
+import auth from '../middleware/auth';
 const router = express.Router();
 
 
@@ -23,21 +24,9 @@ router.post('/', (req,res,next) => {
     });
 });
 
-// GET /users/me I dunno shit
-router.get('/me', (req, res, next) => {
-  let token = req.header('x-auth');
-  User.findByToken(token)
-    .then( user => {
-      if(!user){
-        return Promise.reject();
-      }
-      res.send(user);
-    })
-    .catch( e => {
-      let err = new Error('Needs authorization');
-      err.status = 401;
-      return next(err);
-    });
+// GET /users/me 
+router.get('/me', auth, (req, res, next) => {
+  res.send(req.user);
 });
 
 //POST /users/login
@@ -56,7 +45,5 @@ router.post('/login', (req, res, next) => {
       return next(err);
     });
 });
-
-
 
 export default router;

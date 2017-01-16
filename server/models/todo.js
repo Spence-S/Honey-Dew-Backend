@@ -14,6 +14,10 @@ let todoSchema = new Schema({
   completedAt: {
     type: Number,
     default: null
+  },
+  ownerId: {
+    type: Schema.Types.ObjectId,
+    required: true,
   }
 });
 

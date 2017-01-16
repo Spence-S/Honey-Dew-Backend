@@ -7,8 +7,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { ObjectID } from 'mongodb'
 import Todo from '../models/todo';
+import auth from '../middleware/auth';
+
+
+
+
 /******Set up the router******/
 const router = express.Router();
+//protect all routes
+router.use(auth);
+
+
+
+
 /*****************************
 GET /api returns all todos
 At some point in the future they will
@@ -16,7 +27,9 @@ be ensured to be returned in chronological
 order of when they were made
 ******************************/
 router.get('/', (req, res, next) => {
-  Todo.find({})
+  Todo.find({
+    ownerId: req.user._id
+  })
     .then( (todos) => {
       res.send({
         todos
@@ -26,6 +39,10 @@ router.get('/', (req, res, next) => {
       return next(err);
     });
 });
+
+
+
+
 /*******************************
 GET /:id will return an individual todo item
 and all its saved details
@@ -38,7 +55,10 @@ router.get('/:id', (req, res, next) => {
     return next(err);
   }
 
-  Todo.findOne({ _id: req.params.id })
+  Todo.findOne({
+     _id: req.params.id,
+     ownerId: req.user._id
+    })
     .then( (todo) => {
       if(!todo){
         let err = new Error;
@@ -53,12 +73,19 @@ router.get('/:id', (req, res, next) => {
       return next(err);
     });
 })
+
+
+
+
 /*****************************
 POST /api adds a todo to Database
 Simple enough ;)
 ******************************/
 router.post('/', (req, res, next) => {
-  let todo = new Todo(req.body);
+  let todo = new Todo({
+    text: req.body.text,
+    ownerId: req.user._id
+  });
   todo.save()
     .then( (doc) => {
       res.send(doc);
@@ -68,6 +95,9 @@ router.post('/', (req, res, next) => {
       return next(err);
     });
 });
+
+
+
 /*****************************
 DELETE /api/:id removes the todo
 with id param and returns the new
@@ -83,7 +113,10 @@ router.delete('/:id', (req, res, next) => {
     return next(err);
   }
 
-  Todo.findByIdAndRemove(req.params.id)
+  Todo.findOneAndRemove({
+    _id: req.params.id,
+    ownerId: req.user.id
+  })
     .then( todo => {
       if(returnDeleted){
         res.send(todo);
@@ -103,6 +136,11 @@ router.delete('/:id', (req, res, next) => {
       return next(err);
     });
 });
+
+
+
+
+
 /*******************************
 PUT route to update some shit
 ******************************/
@@ -113,8 +151,11 @@ router.put('/:id', (req, res, next) => {
     console.log(err);
     return next(err);
   }
-  Todo.findByIdAndUpdate(req.params.id, req.body,
-    { new: true, runValidators : true,})
+  Todo.findOneAndUpdate({
+    _id:req.params.id,
+    ownerId: req.user._id
+  }
+  , req.body,  { new: true, runValidators : true,})
     .then( doc => {
       res.send(doc);
     })
@@ -123,5 +164,8 @@ router.put('/:id', (req, res, next) => {
       return next(err);
     });
 });
+
+
+
 /*Export the router as a module*/
 export default router;

@@ -49,6 +49,8 @@ UserSchema.statics.findByToken = function (token){
   });
 };
 
+
+//find a user by e-mail basically, then compare passwords
 UserSchema.statics.findByCredentials = function (email, password) {
   let User = this;
   return User.findOne({email})
@@ -69,6 +71,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
   });
 };
 
+//Use this to NOT return password to client
 UserSchema.methods.toJSON = function () {
   let user = this;
   let userObject = user.toObject();
@@ -76,6 +79,7 @@ UserSchema.methods.toJSON = function () {
   return { _id, email };
 };
 
+//generateAuthToken
 UserSchema.methods.generateAuthToken = function () {
   let user = this;
   let access = 'auth';
@@ -89,6 +93,7 @@ UserSchema.methods.generateAuthToken = function () {
   });
 };
 
+//secure the password
 UserSchema.pre('save', function(next){
   let user = this;
   if(user.isModified('password')){

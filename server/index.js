@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
 catch 404 errors
 **********************/
 app.use((req, res, next) => {
-  let err = new Error('Resources Not Found');
+  let err = new Error('NOPE! 404 bitch: Resources Not Found');
   err.status = 404;
   next(err)
 });
