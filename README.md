@@ -1,13 +1,4 @@
-#FCC Raleigh Full Stack Todo App!
+# To do API
 
-Hi fellow campers!
-
-This is the repository for the full stack todo class.
-
-Here on the master branch you can clone the repo
-to your local machine.
-
-To do the walk through, use the branches at the top left!
-
-Enjoy!
-Spencer
+This is my version of a todo API that was heavily inspired by the todo api created in the nodejs class on Udemy by Andrew Mead. This is my version written in full es6.
+It continues to be modified to my liking. 
