@@ -61,7 +61,7 @@ catch 404 errors
 app.use((req, res, next) => {
   let err = new Error('NOPE! 404 bitch: Resources Not Found');
   err.status = 404;
-  next(err)
+  next(err);
 });
 
 //set up error handler
