@@ -3,6 +3,8 @@ This is the main entry point for our
 "Todo" App. We start by importing
 dependencies and
 ***************************/
+require('dotenv').config();
+
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
@@ -21,9 +23,6 @@ import { Todo, User } from './models/todo';
 Start database connection:
 Here I set up a custom promise for the mongoose
 connection to make things look prettier.
-I am not sure if this will allow the
-event emitter to listen for a database crash
-as I believe is intended.
 *************************/
 connectMongoose()
   .then( result => {
@@ -41,25 +40,27 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //api routes
 app.use('/api', router);
 app.use('/users', userRoute)
+app.use('/*', express.static(path.join(__dirname, '../public/full-stack-todo-front-end/build')));
 
 /*************************
 GET /
 this is where we will
 serve up the react front end
 *************************/
-app.get('/', (req, res) => {
-  res.send("Hello World");
-});
+// app.get('/', (req, res) => {
+//   res.send(./public/build/index.html);
+// });
 
 /*********************
 catch 404 errors
 **********************/
 app.use((req, res, next) => {
-  let err = new Error('NOPE! 404 bitch: Resources Not Found');
+  let err = new Error('SORRY!!!! 404: These Resources Were Definitely Not Found');
   err.status = 404;
   next(err);
 });
@@ -70,6 +71,7 @@ app.use((err, req, res, next) => {
     res.send({
       status: err.status,
       message: err.message,
+      stack: err.stack
     });
 });
 
