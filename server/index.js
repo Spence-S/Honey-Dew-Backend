@@ -41,11 +41,11 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use('/', express.static(path.join(__dirname, '../public/build')));
 
 //api routes
 app.use('/api', router);
 app.use('/users', userRoute)
-app.use('/*', express.static(path.join(__dirname, '../public/full-stack-todo-front-end/build')));
 
 /*************************
 GET /
