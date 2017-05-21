@@ -15,6 +15,10 @@ let todoSchema = new Schema({
     type: Number,
     default: null
   },
+  notes:{
+    type: String,
+    default: 'default string from Mongoose defaults!'
+  },
   ownerId: {
     type: Schema.Types.ObjectId,
     required: true,
