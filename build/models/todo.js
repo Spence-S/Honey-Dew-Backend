@@ -25,6 +25,10 @@ var todoSchema = new _mongoose.Schema({
     type: Number,
     default: null
   },
+  notes: {
+    type: String,
+    default: 'default string from Mongoose defaults!'
+  },
   ownerId: {
     type: _mongoose.Schema.Types.ObjectId,
     required: true
