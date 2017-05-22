@@ -75,8 +75,7 @@ router.post('/login', function (req, res, next) {
 // POST /users/facebook
 // creates or signs in a new user with a fb account
 router.post('/facebook', function (req, res, next) {
-  var facebook = req.body.facebook;
-
+  var facebook = req.body;
   console.log('req.body', req.body);
   _user3.default.findOne({ email: facebook.email }).then(function (user) {
     // if user exists
