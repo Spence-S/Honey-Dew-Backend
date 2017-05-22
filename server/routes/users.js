@@ -101,7 +101,7 @@ router.post('/facebook', (req, res, next) => {
             err.status = 400;
             return next(err);
           });
-      }
+        }
     })
 })
 
