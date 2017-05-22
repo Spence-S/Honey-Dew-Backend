@@ -55,7 +55,7 @@ router.post('/login', (req, res, next) => {
 // POST /users/facebook
 // creates or signs in a new user with a fb account
 router.post('/facebook', (req, res, next) => {
-  let { facebook } = req.body;
+  let facebook = req.body;
   console.log('req.body', req.body);
   User.findOne({email: facebook.email })
     .then(user => {
