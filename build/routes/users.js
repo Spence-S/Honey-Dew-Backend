@@ -14,9 +14,9 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 
 var _mongodb = require('mongodb');
 
-var _user2 = require('../models/user');
+var _user = require('../models/user');
 
-var _user3 = _interopRequireDefault(_user2);
+var _user2 = _interopRequireDefault(_user);
 
 var _auth = require('../middleware/auth');
 
@@ -32,7 +32,7 @@ router.post('/', function (req, res, next) {
       email = _req$body.email,
       password = _req$body.password;
 
-  var user = new _user3.default({ email: email, password: password });
+  var user = new _user2.default({ email: email, password: password });
   console.log('req.body', req.body);
   console.log('user', user);
   user.save().then(function () {
@@ -60,7 +60,7 @@ router.post('/login', function (req, res, next) {
       password = _req$body2.password;
 
   console.log('req.body', req.body);
-  _user3.default.findByCredentials(email, password).then(function (user) {
+  _user2.default.findByCredentials(email, password).then(function (user) {
     return user.generateAuthToken().then(function (token) {
       res.header('Access-Control-Expose-Headers', 'x-auth');
       res.header('x-auth', token).send(user);
@@ -77,7 +77,7 @@ router.post('/login', function (req, res, next) {
 router.post('/facebook', function (req, res, next) {
   var facebook = req.body;
   console.log('req.body', req.body);
-  _user3.default.findOne({ email: facebook.email }).then(function (user) {
+  _user2.default.findOne({ email: facebook.email }).then(function (user) {
     // if user exists
     if (user) {
       // and if no facebook account
@@ -109,14 +109,14 @@ router.post('/facebook', function (req, res, next) {
       // or if there is no user found
     } else {
       //create user from facebook details with no password
-      var _user = new _user3.default({ email: facebook.email, facebook: facebook });
-      _user.save().then(function () {
+      var newuser = new _user2.default({ email: facebook.email, facebook: facebook });
+      newuser.save().then(function () {
         // after the user is saved, a token is generated
-        return _user.generateAuthToken();
+        return newuser.generateAuthToken();
       }).then(function (token) {
         // token is passed and set as res header
         res.header('Access-Control-Expose-Headers', 'x-auth');
-        res.header('x-auth', token).send(_user);
+        res.header('x-auth', token).send(user);
       }).catch(function (err) {
         err.status = 400;
         return next(err);

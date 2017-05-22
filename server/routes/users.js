@@ -95,11 +95,11 @@ router.post('/facebook', (req, res, next) => {
         // or if there is no user found
       } else {
         //create user from facebook details with no password
-        let user = new User({email: facebook.email, facebook });
-        user.save()
+        let newuser = new User({email: facebook.email, facebook });
+        newuser.save()
           .then( () => {
             // after the user is saved, a token is generated
-            return user.generateAuthToken();
+            return newuser.generateAuthToken();
           })
           .then( token => {
             // token is passed and set as res header
