@@ -81,7 +81,16 @@ router.post('/facebook', (req, res, next) => {
             });
             // else fb is there, just send token for Todos
         } else {
-          return user.generateAuthToken();
+          return user.generateAuthToken()
+          .then( token => {
+            // token is passed and set as res header
+            res.header('Access-Control-Expose-Headers', 'x-auth');
+            res.header('x-auth', token).send(user);
+          })
+          .catch( err => {
+            err.status = 400;
+            return next(err);
+          });
         }
         // or if there is no user found
       } else {
