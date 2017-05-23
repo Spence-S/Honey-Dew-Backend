@@ -46,15 +46,6 @@ app.use('/', express.static(path.join(__dirname, '../public/build')));
 app.use('/api', todos);
 app.use('/users', users)
 
-/*************************
-GET /
-this is where we will
-serve up the react front end
-*************************/
-// app.get('/', (req, res) => {
-//   res.send(./public/build/index.html);
-// });
-
 /*********************
 catch 404 errors
 **********************/
