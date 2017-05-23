@@ -9,8 +9,7 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import router from './routes/routes';
-import userRoute from './routes/users'
+import { users, todos } from './routes';
 import cors from 'cors';
 
 /**************************
@@ -44,8 +43,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', express.static(path.join(__dirname, '../public/build')));
 
 //api routes
-app.use('/api', router);
-app.use('/users', userRoute)
+app.use('/api', todos);
+app.use('/users', users)
 
 /*************************
 GET /
