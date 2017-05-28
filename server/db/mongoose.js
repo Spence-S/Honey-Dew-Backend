@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/todo_app');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/honey_dew');
 var db = mongoose.connection;
 
 function connectMongoose(){
