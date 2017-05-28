@@ -6,8 +6,8 @@ import _ from 'lodash';
 const jwt = jsonwebtoken;
 
 var UserSchema = new mongoose.Schema({
-  email: {
-    address: {
+  email: [{
+    email: {
       type: String,
       required: true,
       trim: true,
@@ -16,10 +16,14 @@ var UserSchema = new mongoose.Schema({
       validate: {
         validator: isEmail,
         message: '{VALUE} is not a valid email'
-      },
-    isVerified: Boolean
+      }
+    },
+    isVerified: {
+      type:Boolean,
+      reuired: true,
+      default: false
     }
-  },
+  }],
   first_name: {
     type: String,
     trim: true
@@ -32,22 +36,23 @@ var UserSchema = new mongoose.Schema({
     type:String,
     trim: true
   },
-  image: {
-    url: {
-      type: String,
-      trim: true
-    },
-    file:{
-      type: String,
-      data: Buffer
-    }
-  },
+  image: [{
+      url: {
+        type: String,
+        trim: true
+      },
+      file:{
+        type: String,
+        data: Buffer
+      }
+    }],
   phone: {
     type: Number,
     trim: true
   },
   password: {
     type: String,
+    required: true,
     minlength: 6
   },
   accounts: [{

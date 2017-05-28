@@ -14,7 +14,8 @@ const router = express.Router();
 // POST /users creates a new user
 router.post('/', (req, res, next) => {
   let { email, password } = req.body;
-  let user = new User({email, password});
+  let user = new User({password});
+  user.email.push({email});
   console.log('req.body', req.body);
   console.log('user', user);
   user.save()
