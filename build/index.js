@@ -16,13 +16,7 @@ var _morgan = require('morgan');
 
 var _morgan2 = _interopRequireDefault(_morgan);
 
-var _routes = require('./routes/routes');
-
-var _routes2 = _interopRequireDefault(_routes);
-
-var _users = require('./routes/users');
-
-var _users2 = _interopRequireDefault(_users);
+var _routes = require('./routes');
 
 var _cors = require('cors');
 
@@ -72,17 +66,8 @@ app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use('/', _express2.default.static(_path2.default.join(__dirname, '../public/build')));
 
 //api routes
-app.use('/api', _routes2.default);
-app.use('/users', _users2.default);
-
-/*************************
-GET /
-this is where we will
-serve up the react front end
-*************************/
-// app.get('/', (req, res) => {
-//   res.send(./public/build/index.html);
-// });
+app.use('/api', _routes.todos);
+app.use('/users', _routes.users);
 
 /*********************
 catch 404 errors

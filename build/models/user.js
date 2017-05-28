@@ -42,7 +42,12 @@ var UserSchema = new _mongoose2.default.Schema({
     type: String,
     minlength: 6
   },
-  facebook: Object,
+  fbToken: {
+    type: Object // long term token, exchanged from client token during signup
+  },
+  facebook: {
+    type: Object
+  },
   tokens: [{
     access: {
       type: String,
