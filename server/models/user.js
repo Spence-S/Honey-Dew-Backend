@@ -3,30 +3,64 @@ import { isEmail } from 'validator';
 import jsonwebtoken from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import _ from 'lodash';
-let jwt = jsonwebtoken;
+const jwt = jsonwebtoken;
 
 var UserSchema = new mongoose.Schema({
   email: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1,
-    unique: true,
-    validate: {
-      validator: isEmail,
-      message: '{VALUE} is not a valid email'
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+      unique: true,
+      validate: {
+        validator: isEmail,
+        message: '{VALUE} is not a valid email'
+      },
+    isVerified: Boolean
     }
+  },
+  first_name: {
+    type: String,
+    trim: true
+  },
+  last_name: {
+    type: String,
+    trim: true
+  },
+  user_name: {
+    type:String,
+    trim: true
+  },
+  image: {
+    url: {
+      type: String,
+      trim: true
+    },
+    file:{
+      type: String,
+      data: Buffer
+    }
+  },
+  phone: {
+    type: Number,
+    trim: true
   },
   password: {
     type: String,
     minlength: 6
   },
-  fbToken:{
-    type: Object // long term token, exchanged from client token during signup
-  },
-  facebook:{
-    type: Object
-  },
+  accounts: [{
+    facebook: {
+      name: String,
+      email: String,
+      uid: String,
+      token: [{
+          token: String,
+          expiresIn: Number
+      }]
+    },
+  }],
   tokens: [{
     access: {
       type: String,
@@ -42,7 +76,6 @@ var UserSchema = new mongoose.Schema({
 UserSchema.methods.toJSON = function () {
   var user = this;
   var userObject = user.toObject();
-
   return _.pick(userObject, ['_id', 'email']);
 };
 
