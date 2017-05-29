@@ -24,19 +24,19 @@ var UserSchema = new mongoose.Schema({
       default: false
     }
   }],
-  first_name: {
+  firstName: {
     type: String,
     trim: true
   },
-  last_name: {
+  lastName: {
     type: String,
     trim: true
   },
-  user_name: {
+  username: {
     type:String,
     trim: true
   },
-  image: [{
+  image: {
       url: {
         type: String,
         trim: true
@@ -45,7 +45,7 @@ var UserSchema = new mongoose.Schema({
         type: String,
         data: Buffer
       }
-    }],
+    },
   phone: {
     type: Number,
     trim: true
@@ -66,6 +66,8 @@ var UserSchema = new mongoose.Schema({
       }]
     },
   }],
+  // TODO at some point I want to get
+  // a device type associated with each token
   tokens: [{
     access: {
       type: String,
@@ -81,7 +83,15 @@ var UserSchema = new mongoose.Schema({
 UserSchema.methods.toJSON = function () {
   var user = this;
   var userObject = user.toObject();
-  return _.pick(userObject, ['_id', 'email']);
+  return _.pick(userObject, [
+    '_id',
+    'email',
+    'firstName',
+    'lastName',
+    'username',
+    'image',
+    'accounts'
+  ]);
 };
 
 UserSchema.methods.generateAuthToken = function () {

@@ -2,7 +2,7 @@ import User from '../models/user';
 
 const auth = (req, res, next) => {
   let token = req.header('x-auth');
-  console.log('Requested with token:',token)
+  // console.log('Requested with token:',token)
   User.findByToken(token)
     .then( user => {
       if(!user){

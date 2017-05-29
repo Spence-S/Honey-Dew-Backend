@@ -12,6 +12,9 @@ const router = express.Router();
 
 
 // POST /users creates a new user
+// this is the primary signup route
+// eventually FB signup will be enabled per
+// the FB routes
 router.post('/', (req, res, next) => {
   let { email, password } = req.body;
   let user = new User({password});
@@ -35,11 +38,14 @@ router.post('/', (req, res, next) => {
 });
 
 // GET /users/me
+// just returns the current user information
 router.get('/me', auth, (req, res, next) => {
   res.send(req.user);
 });
 
 //POST /users/login
+// only way of loggin in currently
+// will TODO: expand for fb later
 router.post('/login', (req, res, next) => {
   let { email, password } = req.body;
   console.log('req.body', req.body);
@@ -58,8 +64,37 @@ router.post('/login', (req, res, next) => {
     });
 });
 
+router.put('/', auth, async (req, res, next) => {
+  try {
+    if (req.body.firstName) req.user.firstName = req.body.firstName;
+    if (req.body.lastName) req.user.lastName = req.body.lastName;
+    if (req.body.username) req.user.username = req.body.username;
+    if (req.body.picture) req.user.image.url = req.body.picture;
+    if (req.body.facebook) {
+      req.user.accounts.push({
+        facebook: {
+          name: req.body.facebook.name,
+          email: req.body.facebook.email,
+          uid: req.body.facebook.userID,
+        }
+      });
+    }
+    await  req.user.save();
+  } catch(err){
+      console.log(err);
+      return next(err)
+  }
+  res.send(req.user);
+});
+
+// removes token from user document
+// maybe identify device type??
 router.get('/logout', auth, async (req, res, next) => {
-  await req.user.removeToken(req.token);
+  try {
+    await req.user.removeToken(req.token);
+  } catch (err) {
+    return next(err);
+  }
   res.send('Successfully logged out! See you soon.')
 })
 
