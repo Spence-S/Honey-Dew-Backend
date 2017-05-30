@@ -4,7 +4,7 @@ import { ObjectID } from 'mongodb';
 import User from '../models/user';
 import auth from '../middleware/auth';
 import axios from 'axios';
-import facebook from './facebook';
+//import facebook from './facebook';
 
 
 
@@ -99,6 +99,6 @@ router.get('/logout', auth, async (req, res, next) => {
 })
 
 // routes for user registration and signin with facebook
-router.use('/', facebook);
+//router.use('/', facebook);
 
 export default router;
