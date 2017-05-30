@@ -12,7 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var auth = function auth(req, res, next) {
   var token = req.header('x-auth');
-  console.log('Requested with token:', token);
+  // console.log('Requested with token:',token)
   _user2.default.findByToken(token).then(function (user) {
     if (!user) {
       return Promise.reject();

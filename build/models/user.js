@@ -27,27 +27,68 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var jwt = _jsonwebtoken2.default;
 
 var UserSchema = new _mongoose2.default.Schema({
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1,
-    unique: true,
-    validate: {
-      validator: _validator.isEmail,
-      message: '{VALUE} is not a valid email'
+  email: [{
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+      unique: true,
+      validate: {
+        validator: _validator.isEmail,
+        message: '{VALUE} is not a valid email'
+      }
+    },
+    isVerified: {
+      type: Boolean,
+      reuired: true,
+      default: false
     }
+  }],
+  firstName: {
+    type: String,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    trim: true
+  },
+  username: {
+    type: String,
+    trim: true
+  },
+  image: {
+    url: {
+      type: String,
+      trim: true
+    },
+    file: {
+      type: String,
+      data: Buffer
+    }
+  },
+  phone: {
+    type: Number,
+    trim: true
   },
   password: {
     type: String,
+    required: true,
     minlength: 6
   },
-  fbToken: {
-    type: Object // long term token, exchanged from client token during signup
-  },
-  facebook: {
-    type: Object
-  },
+  accounts: [{
+    facebook: {
+      name: String,
+      email: String,
+      uid: String,
+      token: [{
+        token: String,
+        expiresIn: Number
+      }]
+    }
+  }],
+  // TODO at some point I want to get
+  // a device type associated with each token
   tokens: [{
     access: {
       type: String,
@@ -63,8 +104,7 @@ var UserSchema = new _mongoose2.default.Schema({
 UserSchema.methods.toJSON = function () {
   var user = this;
   var userObject = user.toObject();
-
-  return _lodash2.default.pick(userObject, ['_id', 'email']);
+  return _lodash2.default.pick(userObject, ['_id', 'email', 'firstName', 'lastName', 'username', 'image', 'accounts']);
 };
 
 UserSchema.methods.generateAuthToken = function () {
@@ -109,7 +149,7 @@ UserSchema.statics.findByToken = function (token) {
 UserSchema.statics.findByCredentials = function (email, password) {
   var User = this;
 
-  return User.findOne({ email: email }).then(function (user) {
+  return User.findOne({ 'email.email': email }).then(function (user) {
     if (!user) {
       return Promise.reject();
     }
