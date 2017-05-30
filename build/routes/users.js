@@ -26,13 +26,12 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _facebook = require('./facebook');
-
-var _facebook2 = _interopRequireDefault(_facebook);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//import facebook from './facebook';
+
 
 var router = _express2.default.Router();
 
@@ -178,6 +177,6 @@ router.get('/logout', _auth2.default, function () {
 }());
 
 // routes for user registration and signin with facebook
-router.use('/', _facebook2.default);
+//router.use('/', facebook);
 
 exports.default = router;
