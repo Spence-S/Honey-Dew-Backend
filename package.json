@@ -9,7 +9,7 @@
     "dev": "nodemon server/index.js --exec babel-node  --presets es2015,stage-0"
   },
   "engines": {
-    "node": "6.8.1"
+    "node": "7.10.0"
   },
   "author": "",
   "license": "ISC",
