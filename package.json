@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel server -d build",
     "start-was-supposed-to-be-here-but-doesnt-build-damnit": "node build/index.js",
-    "start": "nodemon server/index.js --exec babel-node  --presets es2015,stage-0",
+    "start": "node server/index.js --exec babel-node  --presets es2015,stage-0",
     "dev": "nodemon server/index.js --exec babel-node  --presets es2015,stage-0"
   },
   "engines": {
