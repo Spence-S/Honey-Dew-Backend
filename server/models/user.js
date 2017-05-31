@@ -123,7 +123,7 @@ UserSchema.statics.findByToken = function (token) {
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET || 'coolcat');
   } catch (e) {
-    return Promise.reject();
+    return Promise.reject(e);
   }
 
   return User.findOne({
@@ -138,7 +138,9 @@ UserSchema.statics.findByCredentials = function (email, password) {
 
   return User.findOne({'email.email': email}).then((user) => {
     if (!user) {
-      return Promise.reject();
+      let err = new Error('Bad request. That email address could not be found, check your spelling or sign up first!');
+      err.status = 400;
+      return Promise.reject(err);
     }
 
     return new Promise((resolve, reject) => {
@@ -147,7 +149,9 @@ UserSchema.statics.findByCredentials = function (email, password) {
         if (res) {
           resolve(user);
         } else {
-          reject();
+          let err = new Error('Bad request. Incorrect password.');
+          err.status = 400;
+          reject(err);
         }
       });
     });

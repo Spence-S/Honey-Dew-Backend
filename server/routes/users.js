@@ -19,8 +19,6 @@ router.post('/', (req, res, next) => {
   let { email, password } = req.body;
   let user = new User({password});
   user.email.push({email});
-  console.log('req.body', req.body);
-  console.log('user', user);
   user.save()
     .then( () => {
       // after the user is saved, a token is generated
@@ -57,9 +55,7 @@ router.post('/login', (req, res, next) => {
           res.header('x-auth', token).send(user);
         });
     })
-    .catch( e => {
-      let err = new Error('problem logging in');
-      err.status = 400;
+    .catch( err => {
       return next(err);
     });
 });
@@ -82,6 +78,7 @@ router.put('/', auth, async (req, res, next) => {
     await  req.user.save();
   } catch(err){
       console.log(err);
+      err.status = 400;
       return next(err)
   }
   res.send(req.user);
