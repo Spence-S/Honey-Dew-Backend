@@ -58,11 +58,9 @@ app.use((req, res, next) => {
 //set up error handler
 app.use((err, req, res, next) => {
   res.status( err.status || 500);
-    res.send({
-      status: err.status,
-      message: err.message,
-      stack: err.stack
-    });
+  // err.message = 'this is a message';
+  console.log(err);
+  res.send(err.message);
 });
 
 //start running app
