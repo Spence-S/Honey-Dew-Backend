@@ -91,6 +91,8 @@ router.post('/', (req, res, next) => {
       res.send(doc);
     })
     .catch( (err) => {
+      let error = new Error();
+      error.message = 'there were no todos!';
       err.status = 400;
       return next(err);
     });

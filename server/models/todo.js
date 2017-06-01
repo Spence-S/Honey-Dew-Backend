@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 let todoSchema = new Schema({
   text: {
     type: String ,
-    required: true ,
+    required: true, 
     trim: true,
     minlength: 1
   },

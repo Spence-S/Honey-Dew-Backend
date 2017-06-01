@@ -60,6 +60,7 @@ app.use((err, req, res, next) => {
   res.status( err.status || 500);
   // err.message = 'this is a message';
   console.log(err);
+  console.log(err.message)
   res.send(err.message);
 });
 
