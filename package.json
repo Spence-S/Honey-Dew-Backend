@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel server -d build",
+    "prestart": "babel server -d build",
     "start": "node build/index.js",
     "dev": "nodemon server/index.js --exec babel-node  --presets env,stage-0"
   },
@@ -26,9 +27,7 @@
     "mongodb": "^2.2.16",
     "mongoose": "^4.7.4",
     "morgan": "^1.7.0",
-    "validator": "^6.2.1"
-  },
-  "devDependencies": {
+    "validator": "^6.2.1",
     "babel-cli": "^6.18.0",
     "babel-preset-env": "^1.5.1",
     "babel-preset-stage-0": "^6.16.0"
