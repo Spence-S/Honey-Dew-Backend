@@ -15,11 +15,11 @@ _mongoose2.default.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017
 var db = _mongoose2.default.connection;
 
 function connectMongoose() {
-  return new Promise(function (resolve, reject) {
-    db.on('error', function () {
+  return new Promise((resolve, reject) => {
+    db.on('error', () => {
       reject(Error('connection error'));
     });
-    db.once('open', function () {
+    db.once('open', () => {
       resolve('we\'re connected!');
     });
   });

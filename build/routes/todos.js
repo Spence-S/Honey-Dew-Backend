@@ -25,7 +25,7 @@ var _auth2 = _interopRequireDefault(_auth);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /******Set up the router******/
-var router = _express2.default.Router();
+const router = _express2.default.Router();
 //protect all routes
 /********************************
 Import all dependencies for routing
@@ -40,14 +40,14 @@ At some point in the future they will
 be ensured to be returned in chronological
 order of when they were made
 ******************************/
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   _todo2.default.find({
     ownerId: req.user._id
-  }).then(function (todos) {
+  }).then(todos => {
     res.send({
-      todos: todos
+      todos
     });
-  }).catch(function (err) {
+  }).catch(err => {
     return next(err);
   });
 });
@@ -56,10 +56,10 @@ router.get('/', function (req, res, next) {
 GET /:id will return an individual todo item
 and all its saved details
 ********************************/
-router.get('/:id', function (req, res, next) {
+router.get('/:id', (req, res, next) => {
 
   if (!_mongodb.ObjectID.isValid(req.params.id)) {
-    var err = new Error('ObjectID invalid');
+    let err = new Error('ObjectID invalid');
     err.status = 400;
     return next(err);
   }
@@ -67,31 +67,33 @@ router.get('/:id', function (req, res, next) {
   _todo2.default.findOne({
     _id: req.params.id,
     ownerId: req.user._id
-  }).then(function (todo) {
+  }).then(todo => {
     if (!todo) {
-      var _err = new Error();
-      _err.status = 404, _err.message = "Todo item was not found";
-      return next(_err);
+      let err = new Error();
+      err.status = 404, err.message = "Todo item was not found";
+      return next(err);
     }
     res.send(todo);
-  }).catch(function (err) {
+  }).catch(err => {
     err.status = 400;
     return next(err);
   });
-});
+}
 
 /*****************************
 POST /api adds a todo to Database
 Simple enough ;)
 ******************************/
-router.post('/', function (req, res, next) {
-  var todo = new _todo2.default({
+);router.post('/', (req, res, next) => {
+  let todo = new _todo2.default({
     text: req.body.text,
     ownerId: req.user._id
   });
-  todo.save().then(function (doc) {
+  todo.save().then(doc => {
     res.send(doc);
-  }).catch(function (err) {
+  }).catch(err => {
+    let error = new Error();
+    error.message = 'there were no todos!';
     err.status = 400;
     return next(err);
   });
@@ -102,11 +104,11 @@ DELETE /api/:id removes the todo
 with id param and returns the new
 list of todos with the removed todo
 *******************************/
-router.delete('/:id', function (req, res, next) {
-  var returnDeleted = true;
+router.delete('/:id', (req, res, next) => {
+  let returnDeleted = true;
 
   if (!_mongodb.ObjectID.isValid(req.params.id)) {
-    var err = new Error('ObjectID invalid');
+    let err = new Error('ObjectID invalid');
     err.status = 400;
     console.log(err);
     return next(err);
@@ -115,18 +117,18 @@ router.delete('/:id', function (req, res, next) {
   _todo2.default.findOneAndRemove({
     _id: req.params.id,
     ownerId: req.user.id
-  }).then(function (todo) {
+  }).then(todo => {
     if (returnDeleted) {
       res.send(todo);
     } else {
-      _todo2.default.find({}).then(function (todos) {
+      _todo2.default.find({}).then(todos => {
         res.send(todos);
-      }).catch(function (err) {
+      }).catch(err => {
         err.status = 400;
         return next(err);
       });
     }
-  }).catch(function (err) {
+  }).catch(err => {
     err.status = 400;
     return next(err);
   });
@@ -135,9 +137,9 @@ router.delete('/:id', function (req, res, next) {
 /*******************************
 PUT route to update some shit
 ******************************/
-router.put('/:id', function (req, res, next) {
+router.put('/:id', (req, res, next) => {
   if (!_mongodb.ObjectID.isValid(req.params.id)) {
-    var err = new Error('ObjectID invalid');
+    let err = new Error('ObjectID invalid');
     err.status = 400;
     console.log(err);
     return next(err);
@@ -145,9 +147,9 @@ router.put('/:id', function (req, res, next) {
   _todo2.default.findOneAndUpdate({
     _id: req.params.id,
     ownerId: req.user._id
-  }, req.body, { new: true, runValidators: true }).then(function (doc) {
+  }, req.body, { new: true, runValidators: true }).then(doc => {
     res.send(doc);
-  }).catch(function (err) {
+  }).catch(err => {
     err.status = 400;
     return next(err);
   });

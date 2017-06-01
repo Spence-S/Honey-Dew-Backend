@@ -10,7 +10,7 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var todoSchema = new _mongoose.Schema({
+let todoSchema = new _mongoose.Schema({
   text: {
     type: String,
     required: true,
@@ -35,6 +35,6 @@ var todoSchema = new _mongoose.Schema({
   }
 });
 
-var Todo = _mongoose2.default.model('Todo', todoSchema);
+const Todo = _mongoose2.default.model('Todo', todoSchema);
 
 exports.default = Todo;

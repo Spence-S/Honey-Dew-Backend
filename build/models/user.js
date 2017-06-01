@@ -24,7 +24,7 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var jwt = _jsonwebtoken2.default;
+const jwt = _jsonwebtoken2.default;
 
 var UserSchema = new _mongoose2.default.Schema({
   email: [{
@@ -110,11 +110,11 @@ UserSchema.methods.toJSON = function () {
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
-  var token = jwt.sign({ _id: user._id.toHexString(), access: access }, process.env.JWT_SECRET || 'coolcat').toString();
+  var token = jwt.sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET || 'coolcat').toString();
 
-  user.tokens.push({ access: access, token: token });
+  user.tokens.push({ access, token });
 
-  return user.save().then(function () {
+  return user.save().then(() => {
     return token;
   });
 };
@@ -124,7 +124,7 @@ UserSchema.methods.removeToken = function (token) {
 
   return user.update({
     $pull: {
-      tokens: { token: token }
+      tokens: { token }
     }
   });
 };
@@ -136,7 +136,7 @@ UserSchema.statics.findByToken = function (token) {
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET || 'coolcat');
   } catch (e) {
-    return Promise.reject();
+    return Promise.reject(e);
   }
 
   return User.findOne({
@@ -149,18 +149,22 @@ UserSchema.statics.findByToken = function (token) {
 UserSchema.statics.findByCredentials = function (email, password) {
   var User = this;
 
-  return User.findOne({ 'email.email': email }).then(function (user) {
+  return User.findOne({ 'email.email': email }).then(user => {
     if (!user) {
-      return Promise.reject();
+      let err = new Error('Bad request. That email address could not be found, check your spelling or sign up first!');
+      err.status = 400;
+      return Promise.reject(err);
     }
 
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       // Use bcrypt.compare to compare password and user.password
-      _bcryptjs2.default.compare(password, user.password, function (err, res) {
+      _bcryptjs2.default.compare(password, user.password, (err, res) => {
         if (res) {
           resolve(user);
         } else {
-          reject();
+          let err = new Error('Bad request. Incorrect password.');
+          err.status = 400;
+          reject(err);
         }
       });
     });
@@ -171,8 +175,8 @@ UserSchema.pre('save', function (next) {
   var user = this;
 
   if (user.isModified('password')) {
-    _bcryptjs2.default.genSalt(10, function (err, salt) {
-      _bcryptjs2.default.hash(user.password, salt, function (err, hash) {
+    _bcryptjs2.default.genSalt(10, (err, salt) => {
+      _bcryptjs2.default.hash(user.password, salt, (err, hash) => {
         user.password = hash;
         next();
       });
