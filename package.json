@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "babel server -d build",
     "build": "babel server -d build",
-    "prestart": "babel server -d build",
+    "prestart": "npm run build",
     "start": "node build/index.js",
-    "dev": "nodemon server/index.js --exec babel-node  --presets env,stage-0"
+    "dev": "nodemon server/index.js --exec \"node --require dotenv/config --require babel-register\""
   },
   "engines": {
     "node": "7.10.0"
@@ -16,20 +17,26 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.1",
+    "babel-cli": "^6.18.0",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.24.1",
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "dotenv": "^4.0.0",
+    "es6-promisify": "^5.0.0",
     "express": "^4.14.0",
     "fb": "^2.0.0",
+    "html-to-text": "^3.3.0",
     "jsonwebtoken": "^7.2.1",
+    "juice": "^4.1.0",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.16",
     "mongoose": "^4.7.4",
     "morgan": "^1.7.0",
-    "validator": "^6.2.1",
-    "babel-cli": "^6.18.0",
-    "babel-preset-env": "^1.5.1",
-    "babel-preset-stage-0": "^6.16.0"
+    "nodemailer": "^4.0.1",
+    "pug": "^2.0.0-rc.2",
+    "validator": "^6.2.1"
   }
 }

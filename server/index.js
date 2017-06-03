@@ -1,9 +1,7 @@
-/**************************
-This is the main entry point for our
-"Todo" App. We start by importing
-dependencies and
-***************************/
-require('dotenv').config();
+// env vars
+import './helpers/mail';
+// import { config } from 'dotenv';
+// config();
 
 import express from 'express';
 import path from 'path';
@@ -11,18 +9,13 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { users, todos } from './routes';
 import cors from 'cors';
+import nodemailer from 'nodemailer';
 
-/**************************
-Import Database dependencies
-***************************/
+// DB deps
 import connectMongoose from './db/mongoose';
 import { Todo, User } from './models/todo';
 
-/************************
-Start database connection:
-Here I set up a custom promise for the mongoose
-connection to make things look prettier.
-*************************/
+// connect to DB
 connectMongoose()
   .then( result => {
     console.log(result);
