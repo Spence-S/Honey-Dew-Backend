@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 let todoSchema = new Schema({
   text: {
     type: String ,
-    required: true, 
+    required: true,
     trim: true,
     minlength: 1
   },
@@ -17,7 +17,7 @@ let todoSchema = new Schema({
   },
   notes:{
     type: String,
-    default: 'default string from Mongoose defaults!'
+    default: 'Todo notes are not enabled yet, but they are coming soon!'
   },
   ownerId: {
     type: Schema.Types.ObjectId,
