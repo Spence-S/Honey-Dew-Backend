@@ -20,6 +20,7 @@ router.post('/', async (req, res, next) => {
   let user = await User.findOne({'email.email': email})
   if(user){
     let err = new Error('That email address is already being used. Sign in via the login form!')
+    err.status = 400;
     return next(err);
   }
   user = new User({password});
