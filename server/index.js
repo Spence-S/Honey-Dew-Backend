@@ -1,15 +1,9 @@
-// env vars
-import './helpers/mail';
-// import { config } from 'dotenv';
-// config();
-
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { users, todos } from './routes';
 import cors from 'cors';
-import nodemailer from 'nodemailer';
 
 // DB deps
 import connectMongoose from './db/mongoose';

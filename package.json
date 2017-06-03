@@ -6,7 +6,6 @@
   "scripts": {
     "postinstall": "babel server -d build",
     "build": "babel server -d build",
-    "prestart": "npm run build",
     "start": "node build/index.js",
     "dev": "nodemon server/index.js --exec \"node --require dotenv/config --require babel-register\""
   },
