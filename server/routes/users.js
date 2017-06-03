@@ -15,9 +15,14 @@ const router = express.Router();
 // this is the primary signup route
 // eventually FB signup will be enabled per
 // the FB routes
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   let { email, password } = req.body;
-  let user = new User({password});
+  let user = await User.findOne({'email.email': email})
+  if(user){
+    let err = new Error('That email address is already being used. Sign in via the login form!')
+    return next(err);
+  }
+  user = new User({password});
   user.email.push({email});
   user.save()
     .then( () => {
