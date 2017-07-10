@@ -17,7 +17,7 @@ It has four primary endpoints for creating, reading, updating, and deleting Todo
 * GET /API/todos/:id
 * POST /API/todos
 * DELETE /API/todos/:id
-* PUT /API/
+* PUT /API/todos/:id
 
 
 The API is currently live on heroku. 
