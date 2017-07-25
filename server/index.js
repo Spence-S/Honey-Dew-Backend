@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import { users, todos } from './routes';
+import { users, todos, lists } from './routes';
 import cors from 'cors';
 
 // DB deps
@@ -11,11 +11,12 @@ import { Todo, User } from './models/todo';
 
 // connect to DB
 connectMongoose()
-  .then( result => {
+  .then(result => {
     console.log(result);
-  }).catch( error => {
-    console.log(error);
   })
+  .catch(error => {
+    console.log(error);
+  });
 
 //set up express app
 const app = express();
@@ -26,32 +27,35 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', express.static(path.join(__dirname, '../public/build')));
 
 //api routes
+app.use('/lists', lists);
 app.use('/api', todos);
-app.use('/users', users)
+app.use('/users', users);
 
 /*********************
 catch 404 errors
 **********************/
 app.use((req, res, next) => {
-  let err = new Error('SORRY!!!! 404: These Resources Were Definitely Not Found');
+  let err = new Error(
+    'SORRY!!!! 404: These Resources Were Definitely Not Found'
+  );
   err.status = 404;
   next(err);
 });
 
 //set up error handler
 app.use((err, req, res, next) => {
-  res.status( err.status || 500);
+  res.status(err.status || 500);
   // err.message = 'this is a message';
   console.log(err);
-  console.log(err.message)
+  console.log(err.message);
   res.send(err.message);
 });
 
 //start running app
-app.listen(port, ()=>{
+app.listen(port, () => {
   console.log(`App is now listening on port ${port}`);
 });

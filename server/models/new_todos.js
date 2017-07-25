@@ -1,20 +1,7 @@
-// Old todo schema
-
+// Schema for each individual todo
 import mongoose, { Schema } from 'mongoose';
 
-let todoListSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  ownerId: {
-    type: Schema.Types.ObjectId,
-    required: true
-  }
-});
-
-// Schema for each individual todo
-let todoSchema = new Schema({
+let newTodoSchema = new Schema({
   text: {
     type: String,
     required: true,
@@ -33,12 +20,16 @@ let todoSchema = new Schema({
     type: String,
     default: 'Todo notes are not enabled yet, but they are coming soon!'
   },
+  ownerId: {
+    type: Schema.Types.ObjectId,
+    required: true
+  },
   listId: {
     type: Schema.Types.ObjectId,
     required: true
   }
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const NewTodo = mongoose.model('NewTodo', newTodoSchema);
 
-export default Todo;
+export default NewTodo;
