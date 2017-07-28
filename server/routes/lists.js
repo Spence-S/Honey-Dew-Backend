@@ -10,7 +10,10 @@ import {
   createNewList,
   createNewTodo,
   returnAllLists,
-  returnListItems
+  returnListItems,
+  deleteList,
+  deleteListItem,
+  updateListItem
 } from '../controllers';
 
 const router = express.Router();
@@ -22,5 +25,7 @@ router.post('/', createNewList);
 router.post('/:listId', createNewTodo);
 router.get('/', returnAllLists);
 router.get('/:listId', returnListItems);
+router.delete('/:listId', deleteList);
+router.delete('/:listId/:listItemId', deleteListItem);
 
 export default router;

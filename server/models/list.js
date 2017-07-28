@@ -7,13 +7,7 @@ let ListSchema = new Schema({
     type: String,
     required: true
   },
-  todoIds: [
-    {
-      todoId: {
-        type: Schema.Types.ObjectId
-      }
-    }
-  ],
+  todoIds: [Schema.Types.ObjectId],
   ownerId: {
     type: Schema.Types.ObjectId,
     required: true
