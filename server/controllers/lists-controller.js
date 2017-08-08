@@ -109,22 +109,24 @@ export const deleteListItem = async (req, res, next) => {
 
 // PUT /lists/listitem/:id
 // updates the desired list item
-const updateListItem = async (req, res, next) => {
-  if (!ObjectID.isValid(req.params.id)) {
+export const updateListItem = async (req, res, next) => {
+  if (!ObjectID.isValid(req.params.listItemId)) {
     let err = new Error('ObjectID invalid');
     err.status = 400;
     console.log(err);
     return next(err);
   }
+  console.log('req.body', req.body);
   NewTodo.findOneAndUpdate(
     {
-      _id: req.params.id,
+      _id: req.params.listItemId,
       ownerId: req.user._id
     },
     req.body,
     { new: true, runValidators: true }
   )
     .then(doc => {
+      console.log('doc to returnt o client', doc);
       res.send(doc);
     })
     .catch(err => {

@@ -27,5 +27,6 @@ router.get('/', returnAllLists);
 router.get('/:listId', returnListItems);
 router.delete('/:listId', deleteList);
 router.delete('/:listId/:listItemId', deleteListItem);
+router.put('/listitem/:listItemId', updateListItem);
 
 export default router;

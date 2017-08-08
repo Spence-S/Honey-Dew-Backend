@@ -6,10 +6,25 @@ import auth from '../middleware/auth';
 import axios from 'axios';
 //import facebook from './facebook';
 
-
-
 const router = express.Router();
 
+router.get('/', async (req, res, next) => {
+  // want to return all user
+  try {
+    const allUsers = await User.find();
+    const userList = allUsers.map(user => {
+      console.log('user in map', user.email[0].email);
+      return {
+        userName: user.email[0].email.split('@')[0],
+        _id: user._id
+      };
+    });
+
+    res.send(userList);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // POST /users creates a new user
 // this is the primary signup route
@@ -17,25 +32,28 @@ const router = express.Router();
 // the FB routes
 router.post('/', async (req, res, next) => {
   let { email, password } = req.body;
-  let user = await User.findOne({'email.email': email})
-  if(user){
-    let err = new Error('That email address is already being used. Sign in via the login form!')
+  let user = await User.findOne({ 'email.email': email });
+  if (user) {
+    let err = new Error(
+      'That email address is already being used. Sign in via the login form!'
+    );
     err.status = 400;
     return next(err);
   }
-  user = new User({password});
-  user.email.push({email});
-  user.save()
-    .then( () => {
+  user = new User({ password });
+  user.email.push({ email });
+  user
+    .save()
+    .then(() => {
       // after the user is saved, a token is generated
       return user.generateAuthToken();
     })
-    .then( token => {
+    .then(token => {
       // token is passed and set as res header
       res.header('Access-Control-Expose-Headers', 'x-auth');
       res.header('x-auth', token).send(user);
     })
-    .catch( err => {
+    .catch(err => {
       err.status = 400;
       return next(err);
     });
@@ -54,14 +72,13 @@ router.post('/login', (req, res, next) => {
   let { email, password } = req.body;
   console.log('req.body', req.body);
   User.findByCredentials(email, password)
-    .then( user => {
-      return user.generateAuthToken()
-        .then( token => {
-          res.header('Access-Control-Expose-Headers', 'x-auth');
-          res.header('x-auth', token).send(user);
-        });
+    .then(user => {
+      return user.generateAuthToken().then(token => {
+        res.header('Access-Control-Expose-Headers', 'x-auth');
+        res.header('x-auth', token).send(user);
+      });
     })
-    .catch( err => {
+    .catch(err => {
       return next(err);
     });
 });
@@ -77,15 +94,15 @@ router.put('/', auth, async (req, res, next) => {
         facebook: {
           name: req.body.facebook.name,
           email: req.body.facebook.email,
-          uid: req.body.facebook.userID,
+          uid: req.body.facebook.userID
         }
       });
     }
-    await  req.user.save();
-  } catch(err){
-      console.log(err);
-      err.status = 400;
-      return next(err)
+    await req.user.save();
+  } catch (err) {
+    console.log(err);
+    err.status = 400;
+    return next(err);
   }
   res.send(req.user);
 });
@@ -98,8 +115,8 @@ router.get('/logout', auth, async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
-  res.send('Successfully logged out! See you soon.')
-})
+  res.send('Successfully logged out! See you soon.');
+});
 
 // routes for user registration and signin with facebook
 //router.use('/', facebook);
